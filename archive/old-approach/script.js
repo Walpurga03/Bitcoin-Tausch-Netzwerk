@@ -52,15 +52,37 @@ class BitcoinTauschApp {
     }
 
     bindEventListeners() {
-        // Login buttons
-        document.getElementById('nostr-login-btn').onclick = () => this.loginWithNostrLogin();
-        document.getElementById('generate-key-btn').onclick = () => this.generateNewKey();
-        document.getElementById('login-btn').onclick = () => this.loginWithKey();
-        document.getElementById('logout-btn').onclick = () => this.logout();
+        // Login buttons - mit null checks für robuste Initialisierung
+        const loginBtn = document.getElementById('loginBtn');
+        const createOfferBtn = document.getElementById('createOfferBtn');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        
+        if (loginBtn) {
+            loginBtn.onclick = () => this.showLoginModal();
+        }
+        
+        if (createOfferBtn) {
+            createOfferBtn.onclick = () => this.showCreateOfferModal();
+        }
+        
+        if (darkModeToggle) {
+            darkModeToggle.onclick = () => this.toggleDarkMode();
+        }
 
-        // Offer creation
-        document.getElementById('create-offer-btn').onclick = () => this.createOffer();
-        document.getElementById('refresh-offers-btn').onclick = () => this.loadOffers();
+        // Legacy elements - falls vorhanden
+        const nostrLoginBtn = document.getElementById('nostr-login-btn');
+        const generateKeyBtn = document.getElementById('generate-key-btn');
+        const legacyLoginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const createOfferBtnLegacy = document.getElementById('create-offer-btn');
+        const refreshOffersBtn = document.getElementById('refresh-offers-btn');
+        
+        if (nostrLoginBtn) nostrLoginBtn.onclick = () => this.loginWithNostrLogin();
+        if (generateKeyBtn) generateKeyBtn.onclick = () => this.generateNewKey();
+        if (legacyLoginBtn) legacyLoginBtn.onclick = () => this.loginWithKey();
+        if (logoutBtn) logoutBtn.onclick = () => this.logout();
+        if (createOfferBtnLegacy) createOfferBtnLegacy.onclick = () => this.createOffer();
+        if (refreshOffersBtn) refreshOffersBtn.onclick = () => this.loadOffers();
 
         // Auto-calculate EUR/BTC conversion
         const btcInput = document.getElementById('btc-amount');
@@ -558,28 +580,142 @@ class BitcoinTauschApp {
 
     showStatus(message, type = 'info') {
         const statusEl = document.getElementById('connection-status');
-        statusEl.textContent = message;
-        statusEl.style.display = 'block';
-        
-        // Set colors based on type
-        switch (type) {
-            case 'success':
-                statusEl.className = 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4';
-                break;
-            case 'error':
-                statusEl.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4';
-                break;
-            case 'warning':
-                statusEl.className = 'bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4';
-                break;
-            default:
-                statusEl.className = 'bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4';
+        if (statusEl) {
+            statusEl.textContent = message;
+            statusEl.style.display = 'block';
+            
+            // Set colors based on type
+            switch (type) {
+                case 'success':
+                    statusEl.className = 'bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4';
+                    break;
+                case 'error':
+                    statusEl.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4';
+                    break;
+                default:
+                    statusEl.className = 'bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded mb-4';
+            }
         }
         
-        // Auto-hide after 5 seconds
-        setTimeout(() => {
-            statusEl.style.display = 'none';
-        }, 5000);
+        // Update new-style connection status
+        const connectionStatus = document.getElementById('connectionStatus');
+        if (connectionStatus) {
+            const statusDot = connectionStatus.querySelector('.status-dot');
+            const statusText = connectionStatus.querySelector('span');
+            
+            if (statusDot && statusText) {
+                statusText.textContent = message;
+                statusDot.className = `status-dot ${type === 'success' ? 'online' : type === 'error' ? 'offline' : 'connecting'}`;
+            }
+        }
+    }
+
+    // 🌙 Dark Mode Toggle
+    toggleDarkMode() {
+        document.body.classList.toggle('light-mode');
+        const toggle = document.getElementById('darkModeToggle');
+        const icon = toggle?.querySelector('i');
+        
+        if (document.body.classList.contains('light-mode')) {
+            if (icon) icon.className = 'bi bi-sun';
+            localStorage.setItem('theme', 'light');
+        } else {
+            if (icon) icon.className = 'bi bi-moon-stars';
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+
+    // 📱 Show Login Modal
+    showLoginModal() {
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+            const modal = new bootstrap.Modal(loginModal);
+            modal.show();
+            this.populateLoginOptions();
+        }
+    }
+
+    // 🔐 Populate Login Options
+    populateLoginOptions() {
+        const loginOptions = document.getElementById('loginOptions');
+        if (!loginOptions) return;
+
+        loginOptions.innerHTML = `
+            <div class="login-option" onclick="app.loginWithNostrLogin()">
+                <div class="option-icon">🔐</div>
+                <div class="option-title">Nostr-Login</div>
+                <div class="option-description">Universal Login mit allen Wallets</div>
+            </div>
+            <div class="login-option" onclick="app.loginWithExtension()">
+                <div class="option-icon">⚡</div>
+                <div class="option-title">Browser Extension</div>
+                <div class="option-description">Alby, nos2x oder andere NIP-07 Extensions</div>
+            </div>
+            <div class="login-option" onclick="app.generateNewKey()">
+                <div class="option-icon">🔑</div>
+                <div class="option-title">Neue Identität</div>
+                <div class="option-description">Erstelle einen neuen privaten Schlüssel</div>
+            </div>
+        `;
+    }
+
+    // 💰 Show Create Offer Modal
+    showCreateOfferModal() {
+        const createOfferModal = document.getElementById('createOfferModal');
+        if (createOfferModal) {
+            const modal = new bootstrap.Modal(createOfferModal);
+            modal.show();
+        }
+    }
+
+    // ⚡ Login with Extension (NIP-07)
+    async loginWithExtension() {
+        try {
+            if (window.nostr) {
+                const pubkey = await window.nostr.getPublicKey();
+                this.currentUser = { pubkey };
+                this.showStatus('Mit Browser Extension angemeldet!', 'success');
+                this.updateUIAfterLogin();
+                this.hideLoginModal();
+            } else {
+                this.showStatus('Keine Nostr Extension gefunden. Bitte installiere Alby oder nos2x.', 'error');
+            }
+        } catch (error) {
+            console.error('Extension login error:', error);
+            this.showStatus('Fehler beim Login mit Extension', 'error');
+        }
+    }
+
+    // 🔐 Hide Login Modal
+    hideLoginModal() {
+        const loginModal = document.getElementById('loginModal');
+        if (loginModal) {
+            const modal = bootstrap.Modal.getInstance(loginModal);
+            modal?.hide();
+        }
+    }
+
+    // 📊 Update UI After Login
+    updateUIAfterLogin() {
+        const loginBtn = document.getElementById('loginBtn');
+        const createOfferBtn = document.getElementById('createOfferBtn');
+        const statsSection = document.getElementById('stats');
+        const searchSection = document.getElementById('searchSection');
+        
+        if (loginBtn) {
+            loginBtn.style.display = 'none';
+        }
+        if (createOfferBtn) {
+            createOfferBtn.style.display = 'inline-flex';
+        }
+        if (statsSection) {
+            statsSection.style.display = 'block';
+        }
+        if (searchSection) {
+            searchSection.style.display = 'block';
+        }
+        
+        this.loadOffers();
     }
 }
 

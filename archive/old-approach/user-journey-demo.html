@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Bitcoin-Gruppe Demo</title>
+    
+    <!-- 🎨 STYLES -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- 🔗 ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+<body class="bg-dark text-light">
+    
+    <!-- 🔐 PRIVATE GROUP DEMO -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                
+                <!-- DEMO SELECTOR -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">🎭 Demo: Wie User in private Gruppe kommen</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="btn-group w-100" role="group">
+                            <button type="button" class="btn btn-outline-warning" onclick="showPublicDemo()">
+                                👥 Öffentliche Gruppe
+                            </button>
+                            <button type="button" class="btn btn-outline-success" onclick="showPrivateDemo()">
+                                🔐 Private Gruppe
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PUBLIC GROUP DEMO -->
+                <div id="publicDemo" class="demo-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header bg-warning text-dark">
+                            <h6 class="mb-0">👥 Öffentliche Gruppe - User Journey</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="step-container">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h6>📬 Invite-Link erhalten</h6>
+                                        <code>https://.../#join/BTN_PUB_ABC123</code>
+                                        <p class="text-muted mt-2">User bekommt Link für öffentliche Kennenlern-Gruppe</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h6>🏷️ Nickname eingeben</h6>
+                                        <div class="mockup-input">
+                                            <input type="text" class="form-control" value="BitcoinMike" readonly>
+                                        </div>
+                                        <p class="text-muted mt-2">Da sich noch nicht alle kennen</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h6>👋 Vorstellung schreiben</h6>
+                                        <div class="mockup-textarea">
+                                            <textarea class="form-control" readonly>Hallo! Ich bin Mike aus München und handle seit 3 Jahren mit Bitcoin...</textarea>
+                                        </div>
+                                        <p class="text-muted mt-2">Kennenlernphase für Vertrauen</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">4</div>
+                                    <div class="step-content">
+                                        <h6>⏳ Admin-Verifikation</h6>
+                                        <div class="alert alert-warning">
+                                            <i class="bi bi-clock"></i> Warte auf Verifikation durch Admin...
+                                        </div>
+                                        <p class="text-muted">Admin prüft und gibt Bitcoin-Handel frei</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRIVATE GROUP DEMO -->
+                <div id="privateDemo" class="demo-section" style="display: none;">
+                    <div class="card">
+                        <div class="card-header bg-success">
+                            <h6 class="mb-0">🔐 Private Gruppe - User Journey</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="step-container">
+                                <div class="step">
+                                    <div class="step-number">1</div>
+                                    <div class="step-content">
+                                        <h6>📱 DM vom Admin</h6>
+                                        <div class="message-mockup">
+                                            <div class="message-bubble">
+                                                <strong>Admin:</strong> Hey Max! Ich habe eine private Bitcoin-Handels-Gruppe erstellt. Hier ist dein Link:
+                                                <br><br>
+                                                <code>https://.../#join/BTN_PRIV_XYZ789</code>
+                                                <br><br>
+                                                Einfach anklicken und mit deiner Nostr-Wallet anmelden! 🔐
+                                            </div>
+                                        </div>
+                                        <p class="text-muted mt-2">Persönliche Einladung an bekannte Person</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">2</div>
+                                    <div class="step-content">
+                                        <h6>🌐 Link anklicken</h6>
+                                        <div class="browser-mockup">
+                                            <div class="browser-header">
+                                                <div class="browser-buttons">
+                                                    <span class="btn-close-mock"></span>
+                                                    <span class="btn-min-mock"></span>
+                                                    <span class="btn-max-mock"></span>
+                                                </div>
+                                                <div class="browser-url">bitcoin-tausch-netzwerk/group.html#join/BTN_PRIV_XYZ789</div>
+                                            </div>
+                                            <div class="browser-content">
+                                                <div class="text-center p-4">
+                                                    <i class="bi bi-shield-check display-4 text-success mb-3"></i>
+                                                    <h5>Private Bitcoin-Handels-Gruppe</h5>
+                                                    <p class="text-muted">Du wurdest eingeladen. Da wir uns bereits kennen, kannst du sofort loslegen!</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="text-muted mt-2">Browser öffnet sich automatisch</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">3</div>
+                                    <div class="step-content">
+                                        <h6>⚡ Wallet-Login</h6>
+                                        <div class="login-options">
+                                            <button class="btn btn-outline-warning btn-sm me-2">
+                                                🦊 Mit Alby anmelden
+                                            </button>
+                                            <button class="btn btn-outline-info btn-sm me-2">
+                                                📱 Mit Amber anmelden
+                                            </button>
+                                            <button class="btn btn-outline-secondary btn-sm">
+                                                🔑 Andere Wallet
+                                            </button>
+                                        </div>
+                                        <p class="text-muted mt-2">Ein Klick → Wallet-Autorisierung → Fertig!</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="step">
+                                    <div class="step-number">✅</div>
+                                    <div class="step-content">
+                                        <h6>🚀 Sofort in der Gruppe!</h6>
+                                        <div class="success-mockup">
+                                            <div class="group-interface">
+                                                <div class="group-header">
+                                                    <h6>🏢 Bitcoin-Handels-Crew</h6>
+                                                    <span class="badge bg-success">8 Mitglieder online</span>
+                                                </div>
+                                                <div class="group-actions">
+                                                    <button class="btn btn-success btn-sm">💰 Bitcoin-Angebot erstellen</button>
+                                                    <button class="btn btn-primary btn-sm">💬 Nachricht senden</button>
+                                                    <button class="btn btn-outline-light btn-sm">🔗 Invite erstellen</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="text-success mt-2"><strong>Kein Nickname, kein Intro, kein Warten!</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COMPARISON -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">⚖️ Vergleich: Öffentlich vs. Private</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="text-warning">👥 Öffentliche Gruppe</h6>
+                                <ul class="list-unstyled">
+                                    <li>✅ Für neue/unbekannte Personen</li>
+                                    <li>✅ Kennenlernphase eingebaut</li>
+                                    <li>✅ Admin-Kontrolle</li>
+                                    <li>❌ Längerer Onboarding-Prozess</li>
+                                    <li>❌ Nickname erforderlich</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="text-success">🔐 Private Gruppe</h6>
+                                <ul class="list-unstyled">
+                                    <li>✅ Für bekannte Personen</li>
+                                    <li>✅ Sofortiger Vollzugriff</li>
+                                    <li>✅ Minimaler Aufwand</li>
+                                    <li>✅ Direkt handeln</li>
+                                    <li>✅ Wallet-basierte Identität</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DEMO LINKS -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h6 class="mb-0">🔗 Demo-Links testen</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>👥 Öffentliche Gruppe</h6>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="group.html#join/BTN_PUB_DEMO" readonly>
+                                    <button class="btn btn-outline-warning" onclick="window.open('group.html#join/BTN_PUB_DEMO', '_blank')">
+                                        Testen
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>🔐 Private Gruppe</h6>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" value="group.html#join/BTN_PRIV_DEMO" readonly>
+                                    <button class="btn btn-outline-success" onclick="window.open('group.html#join/BTN_PRIV_DEMO', '_blank')">
+                                        Testen
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .step-container {
+            position: relative;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        
+        .step-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6b46c1, #8b5cf6);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .message-mockup {
+            background: #2a2a2a;
+            border-radius: 15px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+        
+        .message-bubble {
+            background: linear-gradient(135deg, #6b46c1, #8b5cf6);
+            border-radius: 12px;
+            padding: 0.75rem;
+            color: white;
+        }
+        
+        .browser-mockup {
+            border: 2px solid #333;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #1a1a1a;
+        }
+        
+        .browser-header {
+            background: #333;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .browser-buttons {
+            display: flex;
+            gap: 0.25rem;
+        }
+        
+        .btn-close-mock, .btn-min-mock, .btn-max-mock {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .btn-close-mock { background: #ff5f56; }
+        .btn-min-mock { background: #ffbd2e; }
+        .btn-max-mock { background: #27ca3f; }
+        
+        .browser-url {
+            background: #222;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            flex: 1;
+        }
+        
+        .browser-content {
+            background: linear-gradient(135deg, #1e1b4b, #312e81);
+        }
+        
+        .success-mockup {
+            background: linear-gradient(135deg, #064e3b, #065f46);
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .group-interface {
+            text-align: center;
+        }
+        
+        .group-header {
+            margin-bottom: 1rem;
+        }
+        
+        .group-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .login-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .mockup-input, .mockup-textarea {
+            margin: 0.5rem 0;
+        }
+    </style>
+
+    <script>
+        function showPublicDemo() {
+            document.getElementById('publicDemo').style.display = 'block';
+            document.getElementById('privateDemo').style.display = 'none';
+            
+            // Update button states
+            document.querySelector('.btn-outline-warning').classList.add('active');
+            document.querySelector('.btn-outline-success').classList.remove('active');
+        }
+        
+        function showPrivateDemo() {
+            document.getElementById('publicDemo').style.display = 'none';
+            document.getElementById('privateDemo').style.display = 'block';
+            
+            // Update button states
+            document.querySelector('.btn-outline-warning').classList.remove('active');
+            document.querySelector('.btn-outline-success').classList.add('active');
+        }
+        
+        // Show private demo by default (das ist was du wolltest)
+        showPrivateDemo();
+    </script>
+
+    <!-- 📱 SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
