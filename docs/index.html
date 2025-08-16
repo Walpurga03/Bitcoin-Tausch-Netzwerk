@@ -3,170 +3,302 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔐 Bitcoin-Tausch-Netzwerk</title>
-    <script src="https://unpkg.com/nostr-tools/lib/nostr.bundle.js"></script>
-    <script src="https://unpkg.com/@nostrband/nostr-login"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        .offer-card {
-            transition: transform 0.2s, shadow 0.2s;
-        }
-        .offer-card:hover {
-            transform: translateY(-2px);
-        }
-        .message-unread {
-            border-left: 4px solid #3b82f6;
-        }
-    </style>
+    <title>Bitcoin-Tausch-Netzwerk | Anonymer Nostr-basierter Bitcoin-Handel</title>
+    <meta name="description" content="Sicherer, anonymer Bitcoin-Handel über das dezentrale Nostr-Protokoll. Verbinde dich mit lokalen Bitcoin-Händlern ohne KYC oder zentrale Server.">
+    
+    <!-- 🎨 STYLES -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- 🔤 FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- 🔗 ICONS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- 📱 PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6b46c1">
+    
+    <!-- 🔐 NOSTR LIBRARIES -->
+    <script src="https://unpkg.com/nostr-tools@2.1.0/lib/nostr.bundle.js"></script>
+    <script src="https://unpkg.com/@nostrband/nostr-login@1.0.0/dist/unpkg.js"></script>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <!-- Header -->
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800 mb-2">🔐 Bitcoin-Tausch-Netzwerk</h1>
-            <p class="text-gray-600">Anonyme Kontaktvermittlung für Bitcoin-Händler</p>
-            <p class="text-sm text-red-600 font-semibold">⚠️ Nur Kontaktvermittlung - KEINE Transaktionen!</p>
-        </header>
-
-        <!-- Login Section -->
-                <!-- Login Section -->
-        <div id="login-section" class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <h2 class="text-2xl font-semibold mb-4 text-center">🚀 Jetzt teilnehmen</h2>
-            
-            <div class="space-y-4">
-                <!-- Universal Nostr Login -->
-                <div class="text-center">
-                    <button id="nostr-login-btn" class="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-all transform hover:scale-105">
-                        🔐 Mit Nostr anmelden
-                    </button>
-                    <p class="text-sm text-gray-500 mt-2">Unterstützt: Alby, Amber, nos2x und alle NIP-07 Wallets</p>
-                </div>
-
-                <!-- Quick Start -->
-                <div class="text-center">
-                    <button id="generate-key-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg text-lg transition-colors">
-                        🔑 Neue Identität erstellen
-                    </button>
-                    <p class="text-sm text-gray-500 mt-2">Schnellste Option - automatische Schlüsselgenerierung</p>
-                </div>
-
-                <!-- Divider -->
-                <div class="flex items-center">
-                    <div class="flex-1 border-t border-gray-300"></div>
-                    <span class="px-4 text-gray-500">oder</span>
-                    <div class="flex-1 border-t border-gray-300"></div>
-                </div>
-
-                <!-- Manual Key Input -->
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Eigenen Schlüssel verwenden:</label>
-                    <div class="flex space-x-2">
-                        <input type="password" id="nsec-input" placeholder="nsec1..." 
-                               class="flex-1 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <button id="login-btn" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md transition-colors">
-                            Anmelden
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Supported Wallets Info -->
-                <div class="bg-gray-50 rounded-lg p-4">
-                    <h3 class="font-semibold text-sm text-gray-700 mb-2">🛡️ Unterstützte Wallets:</h3>
-                    <div class="grid grid-cols-2 gap-2 text-sm text-gray-600">
-                        <div>🦌 Alby (Browser)</div>
-                        <div>📱 Amber (Android)</div>
-                        <div>🍎 nos2x (Browser)</div>
-                        <div>⚡ Alle NIP-07 Wallets</div>
-                    </div>
-                </div>
-            </div>
+<body>
+    <!-- 🌟 LOADING OVERLAY -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Verbinde mit Nostr-Netzwerk...</div>
         </div>
-
-        <!-- Connection Status -->
-        <div id="connection-status" class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded mb-4" style="display:none">
-            🔄 Verbinde zu Relay...
-        </div>
-
-        <!-- Main Interface -->
-        <div id="main-interface" style="display:none">
-            <!-- User Info -->
-            <div class="bg-white rounded-lg shadow-md p-4 mb-6">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="text-sm text-gray-600">Ihre Identität:</p>
-                        <p id="user-npub" class="font-mono text-sm break-all"></p>
-                    </div>
-                    <button id="logout-btn" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm transition-colors">
-                        Abmelden
-                    </button>
-                </div>
-            </div>
-
-            <!-- Create Offer Section -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-                <h2 class="text-xl font-semibold mb-4">📝 Neues Angebot erstellen</h2>
-                
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Typ:</label>
-                        <select id="offer-type" class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="BUY">🟢 Bitcoin kaufen</option>
-                            <option value="SELL">🔴 Bitcoin verkaufen</option>
-                        </select>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Bitcoin-Betrag:</label>
-                        <input type="number" id="btc-amount" step="0.001" placeholder="0.025" 
-                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">EUR-Betrag:</label>
-                        <input type="number" id="eur-amount" placeholder="1000" 
-                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Gültigkeitsdauer (Stunden):</label>
-                        <input type="number" id="validity-hours" value="24" min="1" max="168"
-                               class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-                
-                <button id="create-offer-btn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg mt-4 transition-colors">
-                    🚀 Angebot veröffentlichen
-                </button>
-            </div>
-
-            <!-- Offers List -->
-            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-                <h2 class="text-xl font-semibold mb-4">📊 Aktuelle Angebote</h2>
-                <div id="offers-list" class="space-y-4">
-                    <p class="text-gray-500 text-center py-8">Lade Angebote...</p>
-                </div>
-                <button id="refresh-offers-btn" class="w-full bg-gray-500 hover:bg-gray-600 text-white py-2 rounded mt-4 transition-colors">
-                    🔄 Aktualisieren
-                </button>
-            </div>
-
-            <!-- Messages Section -->
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-xl font-semibold mb-4">💬 Private Nachrichten <span id="unread-count" class="bg-red-500 text-white px-2 py-1 rounded-full text-sm" style="display:none">0</span></h2>
-                <div id="messages-list" class="space-y-4">
-                    <p class="text-gray-500 text-center py-8">Keine Nachrichten</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <footer class="text-center mt-12 text-gray-500 text-sm">
-            <p>Open Source - <a href="https://github.com/Walpurga03/Bitcoin-Tausch-Netzwerk" class="text-blue-500 hover:underline">GitHub Repository</a></p>
-            <p>Powered by Nostr Protocol & Rust Backend</p>
-        </footer>
     </div>
 
-    <!-- Scripts -->
+    <!-- 🌙 DARK MODE TOGGLE -->
+    <button class="dark-mode-toggle" id="darkModeToggle" title="Dark Mode umschalten">
+        <i class="bi bi-moon-stars"></i>
+    </button>
+
+    <!-- 📱 HEADER -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">
+                    <i class="bi bi-currency-bitcoin"></i>
+                    Bitcoin-Tausch-Netzwerk
+                </a>
+                <div class="nav-links">
+                    <a href="#offers">Angebote</a>
+                    <a href="#chat">Nachrichten</a>
+                    <a href="#network">Netzwerk</a>
+                </div>
+                <div class="nav-actions">
+                    <div class="status-indicator" id="connectionStatus">
+                        <div class="status-dot connecting"></div>
+                        <span>Verbinde...</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 🚀 MAIN CONTENT -->
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero">
+            <div class="container">
+                <h1 class="hero-title fade-in">
+                    Anonymer Bitcoin-Handel
+                    <br>über Nostr-Protokoll
+                </h1>
+                <p class="hero-subtitle fade-in">
+                    Sichere Kontaktvermittlung zwischen Bitcoin-Käufern und -Verkäufern. 
+                    Keine KYC, keine zentrale Server, maximale Anonymität.
+                </p>
+                <div class="hero-buttons fade-in">
+                    <button id="loginBtn" class="btn btn-primary">
+                        <i class="bi bi-wallet2"></i>
+                        Mit Wallet anmelden
+                    </button>
+                    <button id="createOfferBtn" class="btn btn-secondary" style="display: none;">
+                        <i class="bi bi-plus-circle"></i>
+                        Angebot erstellen
+                    </button>
+                    <a href="#how-it-works" class="btn btn-outline">
+                        <i class="bi bi-info-circle"></i>
+                        Wie es funktioniert
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🔐 LOGIN MODAL -->
+        <div id="loginModal" class="modal fade" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="login-container">
+                        <h2 class="login-title">
+                            <i class="bi bi-shield-lock"></i>
+                            Sicher anmelden
+                        </h2>
+                        <div class="login-options" id="loginOptions">
+                            <!-- Login options will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📊 STATS SECTION -->
+        <section class="stats-section" id="stats" style="display: none;">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="activeOffers">0</div>
+                        <div class="stat-label">Aktive Angebote</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="connectedRelays">0</div>
+                        <div class="stat-label">Verbundene Relays</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="onlineUsers">0</div>
+                        <div class="stat-label">Online-Nutzer</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalMessages">0</div>
+                        <div class="stat-label">Nachrichten heute</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🔍 SEARCH & FILTERS -->
+        <section class="search-section" id="searchSection" style="display: none;">
+            <div class="container">
+                <div class="search-filters">
+                    <div class="search-bar">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Suche nach Angeboten, Orten oder Preisen...">
+                        <button class="search-clear" id="searchClear" style="display: none;">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    <div class="filter-row">
+                        <div class="filter-group">
+                            <select id="typeFilter">
+                                <option value="">Alle Arten</option>
+                                <option value="buy">Kaufen</option>
+                                <option value="sell">Verkaufen</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select id="locationFilter">
+                                <option value="">Alle Orte</option>
+                                <!-- Populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <input type="number" id="minAmount" placeholder="Min. Betrag">
+                        </div>
+                        <div class="filter-group">
+                            <input type="number" id="maxAmount" placeholder="Max. Betrag">
+                        </div>
+                    </div>
+                    <div class="filter-tags" id="filterTags"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 💰 OFFERS SECTION -->
+        <section class="offers-section" id="offers">
+            <div class="container">
+                <h2 class="section-title text-center text-gradient">Aktuelle Angebote</h2>
+                <div class="offers-grid" id="offersGrid">
+                    <!-- Offers will be populated by JavaScript -->
+                </div>
+                <div class="text-center" id="noOffers" style="display: none;">
+                    <p class="text-muted">Noch keine Angebote verfügbar. Sei der Erste!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 💬 CHAT SECTION -->
+        <section class="chat-section" id="chat" style="display: none;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="chat-sidebar">
+                            <h3>Konversationen</h3>
+                            <div class="conversations-list" id="conversationsList">
+                                <!-- Conversations will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="chat-container" id="chatContainer">
+                            <div class="chat-placeholder">
+                                <i class="bi bi-chat-dots display-1 text-muted"></i>
+                                <p class="text-muted">Wähle eine Konversation aus oder starte eine neue</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 🌐 NETWORK STATUS -->
+        <section class="network-section" id="network" style="display: none;">
+            <div class="container">
+                <div class="network-status">
+                    <div class="status-header">
+                        <h3 class="status-title">
+                            <i class="bi bi-diagram-3"></i>
+                            Netzwerk-Status
+                        </h3>
+                        <button class="refresh-btn" id="refreshNetwork" title="Aktualisieren">
+                            <i class="bi bi-arrow-clockwise"></i>
+                        </button>
+                    </div>
+                    <div class="relays-list" id="relaysList">
+                        <!-- Relays will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 📝 CREATE OFFER MODAL -->
+    <div id="createOfferModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="bi bi-plus-circle"></i>
+                        Neues Angebot erstellen
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createOfferForm">
+                        <div class="form-group">
+                            <label for="offerType">Art des Angebots</label>
+                            <select id="offerType" required>
+                                <option value="">Wähle eine Art</option>
+                                <option value="buy">Bitcoin kaufen</option>
+                                <option value="sell">Bitcoin verkaufen</option>
+                            </select>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="offerAmount">Betrag (EUR)</label>
+                                    <input type="number" id="offerAmount" min="1" step="0.01" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="offerPrice">Preis pro BTC (EUR)</label>
+                                    <input type="number" id="offerPrice" min="1" step="0.01" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="offerLocation">Standort (optional)</label>
+                            <input type="text" id="offerLocation" placeholder="z.B. Berlin, München...">
+                        </div>
+                        <div class="form-group">
+                            <label for="offerDescription">Beschreibung (optional)</label>
+                            <textarea id="offerDescription" rows="3" placeholder="Zusätzliche Informationen zu deinem Angebot..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="offerDuration">Gültigkeitsdauer</label>
+                            <select id="offerDuration">
+                                <option value="1">1 Stunde</option>
+                                <option value="6">6 Stunden</option>
+                                <option value="24" selected>24 Stunden</option>
+                                <option value="168">1 Woche</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Abbrechen</button>
+                    <button type="submit" form="createOfferForm" class="btn btn-primary" id="submitOffer">
+                        <i class="bi bi-check-circle"></i>
+                        Angebot veröffentlichen
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 🔔 NOTIFICATIONS CONTAINER -->
+    <div id="notificationsContainer"></div>
+
+    <!-- 📱 SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
