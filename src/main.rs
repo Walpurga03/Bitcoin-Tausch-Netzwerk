@@ -6,12 +6,14 @@ mod offer_manager;
 mod nostr_client;
 mod anonymous_publisher;
 mod relay_tester;
+mod nip17_messenger;
 
 use types::{AnonymousOffer, OfferType, PrivateInterest};
 use offer_manager::OfferManager;
 use nostr_client::NostrClient;
 use anonymous_publisher::AnonymousOfferPublisher;
 use relay_tester::RelayTester;
+use nip17_messenger::{Nip17Messenger, MessageType};
 
 #[tokio::main]
 async fn main() -> Result<()> {
@@ -209,7 +211,11 @@ async fn test_anonymous_offer_publishing() -> Result<()> {
         }
     }
     
-        info!("✅ Anonymous offer publishing test completed!");
+    info!("✅ Anonymous offer publishing test completed!");
+
+    // 💬 Test NIP-17 Private Messaging
+    info!("💬 Testing NIP-17 Private Messaging...");
+    test_nip17_messaging().await?;
 
     // 🧪 Test Relay Compatibility
     info!("🧪 Testing relay compatibility for all required NIPs...");
@@ -226,5 +232,112 @@ async fn test_anonymous_offer_publishing() -> Result<()> {
     }
 
     info!("✅ Application initialized successfully");
+    Ok(())
+}
+
+/// Demo für NIP-17 Private Messaging Features
+async fn test_nip17_messaging() -> Result<()> {
+    info!("🚀 Starting NIP-17 Private Messaging Demo...");
+    
+    // Setup zwei Clients (Alice und Bob)
+    let relay_url = "wss://nostr-relay.online";
+    
+    let alice_client = NostrClient::new(relay_url.to_string()).await?;
+    let bob_client = NostrClient::new(relay_url.to_string()).await?;
+    
+    // Verbinde beide Clients
+    alice_client.connect().await?;
+    bob_client.connect().await?;
+    
+    info!("👩 Alice: {}", alice_client.get_npub()?);
+    info!("👨 Bob: {}", bob_client.get_npub()?);
+    
+    // Erstelle Messenger für beide
+    let alice_messenger = Nip17Messenger::new(
+        alice_client.client.clone(),
+        alice_client.keys.clone()
+    );
+    
+    let bob_messenger = Nip17Messenger::new(
+        bob_client.client.clone(), 
+        bob_client.keys.clone()
+    );
+    
+    // Starte Message Listener für beide
+    alice_messenger.start_message_listener().await?;
+    bob_messenger.start_message_listener().await?;
+    
+    // Simuliere ein Bitcoin-Angebot
+    let offer_id = "offer_demo_123";
+    let offer_creator_pubkey = alice_client.get_npub()?;
+    
+    info!("📝 Alice erstellt ein Bitcoin-Angebot: {}", offer_id);
+    
+    // Bob zeigt Interesse an Alice's Angebot
+    info!("💌 Bob sendet Interessensbekundung an Alice...");
+    let interest_event_id = bob_messenger.send_interest_message(
+        &offer_creator_pubkey,
+        offer_id,
+        Some("Ich interessiere mich für Ihr BTC-Angebot. Können wir über den Preis verhandeln?")
+    ).await?;
+    
+    info!("✅ Interesse gesendet! Event ID: {}", interest_event_id);
+    
+    // Warte kurz für Message Processing
+    tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;
+    
+    // Alice antwortet positiv
+    info!("✅ Alice akzeptiert Bob's Interesse...");
+    let response_event_id = alice_messenger.respond_to_interest(
+        &bob_client.get_npub()?,
+        offer_id,
+        true,
+        Some("Gerne! Lassen Sie uns die Details besprechen. Welchen Betrag möchten Sie tauschen?")
+    ).await?;
+    
+    info!("✅ Antwort gesendet! Event ID: {}", response_event_id);
+    
+    // Weitere Verhandlungsnachrichten
+    tokio::time::sleep(tokio::time::Duration::from_secs(1)).await;
+    
+    let negotiation_event_id = bob_messenger.send_private_message(
+        &offer_creator_pubkey,
+        "Ich möchte 0.1 BTC kaufen. Können wir uns auf 4.200€ einigen?",
+        MessageType::Negotiation,
+        Some(offer_id.to_string()),
+    ).await?;
+    
+    info!("💬 Bob's Verhandlungsnachricht gesendet: {}", negotiation_event_id);
+    
+    // Warte für Processing
+    tokio::time::sleep(tokio::time::Duration::from_secs(2)).await;
+    
+    // Zeige Conversation Statistics
+    let alice_conversations = alice_messenger.get_all_conversations().await;
+    let bob_conversations = bob_messenger.get_all_conversations().await;
+    
+    info!("📊 Alice hat {} Conversations", alice_conversations.len());
+    info!("📊 Bob hat {} Conversations", bob_conversations.len());
+    
+    info!("📬 Alice ungelesene Nachrichten: {}", alice_messenger.get_unread_count().await);
+    info!("📬 Bob ungelesene Nachrichten: {}", bob_messenger.get_unread_count().await);
+    
+    // Zeige Details einer Conversation
+    if let Some((conv_id, conversation)) = alice_conversations.iter().next() {
+        info!("💬 Conversation Details: {}", conv_id);
+        info!("   👥 Teilnehmer: {:?}", conversation.participants);
+        info!("   📨 Nachrichten: {}", conversation.messages.len());
+        info!("   🔗 Linked Offer: {:?}", conversation.linked_offer_id);
+        
+        for (i, msg) in conversation.messages.iter().enumerate() {
+            info!("   📝 Message {}: {} -> {}", 
+                i + 1, 
+                &msg.sender_pubkey[..8], 
+                &msg.content[..50.min(msg.content.len())]
+            );
+        }
+    }
+    
+    info!("✅ NIP-17 Messaging Demo completed successfully!");
     Ok(())
 }

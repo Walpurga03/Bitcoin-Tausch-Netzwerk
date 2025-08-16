@@ -9,8 +9,8 @@ use crate::anonymous_publisher::AnonymousOfferPublisher;
 
 /// Nostr Client für das Bitcoin-Tausch-Netzwerk
 pub struct NostrClient {
-    client: Client,
-    keys: Keys,
+    pub client: Client,
+    pub keys: Keys,
     relay_url: String,
 }
 
