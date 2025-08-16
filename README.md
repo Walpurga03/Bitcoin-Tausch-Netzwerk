@@ -24,7 +24,7 @@ Ein dezentrales System auf Basis des Nostr-Protokolls, das es ermöglicht:
 - **NIP-59 Gift Wrapping** für vollständige Anonymität
 - **Temporäre Identitäten** für jede Transaktion
 - **Pseudo-ID System** ohne Rückverfolgbarkeit
-- **Verschlüsselte Kommunikation** via NIP-44
+- **Verschlüsselte Kommunikation** via NIP-17
 
 ### 💰 **Bitcoin-Angebote**
 - **BUY/SELL Angebote** mit flexibler Preisgestaltung
@@ -134,8 +134,8 @@ Das System unterstützt folgende Nostr Improvement Proposals:
 |-----|-------------|--------|
 | [NIP-01](https://github.com/nostr-protocol/nips/blob/master/01.md) | Basic protocol flow | ✅ Vollständig |
 | [NIP-12](https://github.com/nostr-protocol/nips/blob/master/12.md) | Generic tag queries | ✅ Vollständig |
+| [NIP-17](https://github.com/nostr-protocol/nips/blob/master/17.md) | Private Direct Messages | ✅ Vollständig |
 | [NIP-29](https://github.com/nostr-protocol/nips/blob/master/29.md) | Simple Groups | ✅ Vollständig |
-| [NIP-44](https://github.com/nostr-protocol/nips/blob/master/44.md) | Versioned Encryption | ✅ Vollständig |
 | [NIP-59](https://github.com/nostr-protocol/nips/blob/master/59.md) | Gift Wrap | ✅ Vollständig |
 
 ## 🔐 Sicherheit
