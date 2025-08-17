@@ -47,7 +47,7 @@
                                     </button>
                                 </div>
                                 <div class="form-text text-muted mt-2">
-                                    <small>Demo: nsec1qy0dpc4qec30tce9ez6hqgj9qk2twdpyxdlqwswyfp4x88hk53v3sd3yt6t</small>
+                                    <small>Demo: nsec1dxdzmrddnhdwrwpgu8sn86mtwnakqjl2g92xq3feecge52medwcquqc7hs</small>
                                 </div>
                             </div>
                             
@@ -113,12 +113,31 @@
                 loginBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> Prüfe Berechtigung...';
 
                 try {
+                    console.log('🔍 DEBUG: Starting nsec processing...');
+                    console.log('📝 Input nsec:', nsec);
+                    console.log('📏 nsec length:', nsec.length);
+                    console.log('🔤 nsec starts with nsec1:', nsec.startsWith('nsec1'));
+                    
                     // Convert nsec to npub
+                    console.log('⚙️ Attempting to decode nsec...');
                     const decoded = window.NostrTools.nip19.decode(nsec);
-                    const publicKey = decoded.data;
-                    const npub = window.NostrTools.nip19.npubEncode(publicKey);
+                    console.log('✅ Decoded successfully:', decoded);
+                    
+                    // Convert the private key to hex format for getPublicKey
+                    const privateKeyHex = Array.from(decoded.data, byte => byte.toString(16).padStart(2, '0')).join('');
+                    console.log('🔑 Private key (hex):', privateKeyHex);
+                    
+                    // Get public key using the hex format
+                    const publicKeyHex = window.NostrTools.getPublicKey(privateKeyHex);
+                    console.log('🔑 Public key (hex):', publicKeyHex);
+                    console.log('📏 Public key length:', publicKeyHex.length);
+                    
+                    const npub = window.NostrTools.nip19.npubEncode(publicKeyHex);
+                    console.log('🎯 Generated npub:', npub);
 
-                    console.log('Generated npub:', npub); // Debug
+                    console.log('📋 Checking allowlist...');
+                    console.log('🔍 AUTHORIZED_MEMBERS:', AUTHORIZED_MEMBERS);
+                    console.log('❓ Is npub in allowlist:', AUTHORIZED_MEMBERS.includes(npub));
 
                     // Check allowlist
                     if (AUTHORIZED_MEMBERS.includes(npub)) {
@@ -142,6 +161,13 @@
                         }, 1000);
                     }
                 } catch (error) {
+                    console.error('❌ ERROR Details:');
+                    console.error('📝 Error message:', error.message);
+                    console.error('🔍 Error stack:', error.stack);
+                    console.error('📥 Input nsec was:', nsec);
+                    console.error('📏 Input length was:', nsec.length);
+                    console.error('🔤 Input characters:', nsec.split('').map((c, i) => `${i}: '${c}'`));
+                    
                     showStatus('danger', 'Fehler beim Verarbeiten des nsec: ' + error.message);
                 }
 
