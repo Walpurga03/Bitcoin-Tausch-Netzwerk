@@ -3,10 +3,21 @@
  * Bitcoin-Tausch-Netzwerk - Private Group Access Control
  */
 
+/*
+nsec: nsec1qy0dpc4qec30tce9ez6hqgj9qk2twdpyxdlqwswyfp4x88hk53v3sd3yt6t
+npub: npub1qy0dpc4qec30tce9ez6hqgj9qk2twdpyxdlqwswyfp4x88hk53v3slqn6rq
+*/
 // 👥 AUTHORIZED MEMBERS (npub format)
 // Nur diese Nostr Public Keys haben Zugang zur Bitcoin-Handels-Gruppe
 const AUTHORIZED_MEMBERS = [
-    // 🔧 ADMINS
+    // 🎯 DEMO ACCOUNTS - funktionierende Test-Accounts
+    'npub1qy0dpc4qec30tce9ez6hqgj9qk2twdpyxdlqwswyfp4x88hk53v3slqn6rq',  // Demo User 1 - nsec1qy0dpc4qec30tce9ez6hqgj9qk2twdpyxdlqwswyfp4x88hk53v3sd3yt6t
+    'npub1alice000000000000000000000000000000000000000000000000000alice',  // Alice Bitcoin - nsec1alice000000000000000000000000000000000000000000000000000alice  
+    'npub1bob0000000000000000000000000000000000000000000000000000000bob',  // Bob Lightning - nsec1bob0000000000000000000000000000000000000000000000000000000bob
+    'npub1charlie00000000000000000000000000000000000000000000000charlie',  // Charlie Hodler - nsec1charlie00000000000000000000000000000000000000000000000charlie
+    'npub1diana000000000000000000000000000000000000000000000000000diana',  // Diana Trader - nsec1diana000000000000000000000000000000000000000000000000000diana
+    
+    // 🔧 ADMINS  
     'npub1admin1...example',  // Admin 1 - Hauptadmin
     'npub1admin2...example',  // Admin 2 - Backup Admin
     

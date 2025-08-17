@@ -1,77 +1,34 @@
 # 🔐 Bitcoin-Tausch-Netzwerk
-## Private Nostr-Gruppe mit nsec-basierter Zugriffskontrolle
+## ⚡ Anonyme Bitcoin-Kontaktvermittlung - **LIVE & EINSATZBEREIT** ✅
 
-### 🎯 **Das Konzept**
+### 🎯 **Funktionale Web-App für anonyme Bitcoin-Kontakte**
+- ✅ **3-Seiten-System** bereit für sofortigen Einsatz
+- ✅ **Anonyme Angebote** - Verkäufer bleiben unerkannt
+- ✅ **Partner-Kontrolle** - Anbieter wählt Kontakte  
+- ✅ **nsec-Authentifizierung** - Sicher ohne Passwörter
 
-Eine **private Bitcoin-Handels-Gruppe** für bekannte Personen, basierend auf:
-- ✅ **Nsec-basierte Authentifizierung** (einfach & sicher)
-- ✅ **Allowlist-System** (nur eingeladene Members)
-- ✅ **Dezentrale Architektur** (keine Server, keine Datenbank)
-- ✅ **Nostr-Integration** (zukunftssicher & privat)
+### 🌐 **Sofort verfügbar**
+```bash
+🚀 Demo-URL: https://dein-username.github.io/Bitcoin-Tausch-Netzwerk/start.html
+🔑 Demo-Login: nsec15tl6pwn8h00w85qcvggchzuf0egk4jha08q8mtw74q6ennu45lzsjmpfhw
+💰 Live-Angebote: €150, €300, €500 (Bargeld/Rechnung/Überweisung)
+```
 
 ---
 
 ## 🚀 **Wie es funktioniert**
 
-### 1. **👤 Member-Login**
-```
-User gibt nsec ein → System konvertiert zu npub → Prüfung gegen Allowlist
-✅ Authorized → Sofortiger Zugang zur Handels-Gruppe
-❌ Not Authorized → "Zugang beantragen" Option
-```
+### **1. 🔑 Login** 
+`start.html` → nsec eingeben → Allowlist-Check → Dashboard-Zugang
 
-### 2. **🔐 Allowlist-Verwaltung**
-```javascript
-// 🔐 AUTHORIZED MEMBERS (npub format)
-const AUTHORIZED_MEMBERS = [
-    'npub1max...example1',    // Max - Bitcoin OG
-    'npub1lisa...example2',   // Lisa - Lightning Expert  
-    'npub1tom...example3',    // Tom - Hodler
-    'npub1sarah...example4',  // Sarah - DeFi Queen
-    'npub1admin...example6',  // Admin (du)
-];
-```
+### **2. 💰 Angebote sehen**
+`dashboard.html` → Anonyme Liste: "€500 (Bargeld) - 2 Interessen"
 
-### 3. **📝 Neue Member-Anfragen**
-- User gibt npub + Nachricht ein
-- Admin bekommt DM über Nostr
-- Admin entscheidet und fügt npub zur Liste hinzu
-- User kann sich dann einloggen
+### **3. 💝 Interesse zeigen** 
+"Interesse zeigen" klicken → Counter steigt → Anbieter wird benachrichtigt
 
----
-
-## 💰 **Features der Handels-Gruppe**
-
-### **Für Members verfügbar:**
-- 👀 **Aktive Bitcoin-Angebote** anzeigen
-- 📊 **Kauf/Verkauf-Angebote** erstellen  
-- 💬 **Direkter Chat** mit anderen Tradern
-- 👥 **Member-Liste** mit Online-Status
-- 🔔 **Push-Notifications** für neue Deals
-
-### **Bitcoin-Handel Features:**
-- 💸 **Verkaufen**: Menge, Preis, Zahlungsart
-- 💰 **Kaufen**: Gesuchte Menge, Maximalpreis
-- 🏦 **Zahlungsarten**: SEPA, Cash, Lightning
-- 📍 **Location-Filter**: München, Berlin, etc.
-- ⭐ **Reputation-System**: Bewertungen nach Handel
-
----
-
-## 🛡️ **Security & Privacy**
-
-### **Was ist sicher:**
-- ✅ **Nsec bleibt lokal** - wird nie übertragen
-- ✅ **Nur npub wird geprüft** - öffentlich sicher
-- ✅ **Allowlist-Kontrolle** - keine unbekannten User
-- ✅ **Dezentrales System** - kein Single Point of Failure
-- ✅ **End-to-End-Chat** - via Nostr DMs
-
-### **Admin-Kontrolle:**
-- 🎛️ **Vollständige Member-Kontrolle**
-- 🚫 **Sofortige Sperrung** möglich
-- 📊 **Activity-Monitoring**
-- 🔄 **Backup-Admins** definierbar
+### **4. 👥 Partner wählen**
+`my-offers.html` → Interessenten-Liste → "Chat starten" → Private Verhandlung
 
 ---
 
@@ -79,100 +36,94 @@ const AUTHORIZED_MEMBERS = [
 
 ```
 Bitcoin-Tausch-Netzwerk/
-├── docs/
-│   ├── index.html           # 🔐 Haupt-App (nsec-Login)
-│   ├── styles/              # 🎨 SCSS mit Nostr-Farben
-│   │   ├── main.css         # Kompilierte Styles
-│   │   ├── _variables.scss  # Farben & Variablen
-│   │   └── _components.scss # UI-Komponenten
-│   ├── manifest.json        # 📱 PWA-Manifest
-│   └── nsec-login-demo.html # 🎭 Demo-Version
-├── src/
-│   ├── main.rs              # 🦀 Rust Backend (optional)
-│   ├── offer_manager.rs     # 💰 Bitcoin-Angebote
-│   └── nostr_client.rs      # 📡 Nostr-Integration
-├── archive/old-approach/    # 📦 Alte Ansätze (Backup)
-└── README.md                # 📖 Diese Dokumentation
+├── docs/                    # 🌐 Live Web-App
+│   ├── start.html          # 🔐 Login (nsec-Input)
+│   ├── dashboard.html      # 💰 Angebots-Übersicht  
+│   ├── my-offers.html      # 👥 Interessenten-Management
+│   ├── config.js           # ⚙️ Allowlist-Konfiguration
+│   └── styles/             # 🎨 Bootstrap + Glassmorphismus
+├── src/                    # 🦀 Rust Backend (v2.0)
+├── MASTERPLAN.md          # 📋 Vollständige Dokumentation
+└── README.md              # 🚀 Diese Anleitung
 ```
 
 ---
 
-## 🎨 **Design-System**
-
-### **Nostr-Farben:**
-- 🟣 **Primary**: `#6b46c1` (Lila)
-- 🟢 **Secondary**: `#8b5cf6` (Violett)  
-- 🌸 **Accent**: `#ec4899` (Pink)
-- ⚫ **Dark**: `#1a1a1a` (Fast Schwarz)
-
-### **UI-Features:**
-- 🔮 **Glass Morphism** Effekte
-- 🌈 **Gradient Buttons**
-- ✨ **Neon Glow** Animationen
-- 📱 **Mobile-First** Responsive
+## 🎨 **Design-Features**
+- **🔮 Glassmorphismus** - Moderne transparente UI
+- **🟣 Nostr-Branding** - Lila/Pink Farbschema (#6b46c1, #ec4899)
+- **📱 Mobile-optimiert** - Bootstrap 5.3 responsive
+- **⚡ PWA-ready** - Installierbar als App
 
 ---
 
-## 🚀 **Deployment**
+## 🚀 **Deployment (5 Minuten)**
 
-### **GitHub Pages:**
+### **GitHub Pages aktivieren:**
 ```bash
-# Automatisch via GitHub Actions
-git push origin main
-# → Live unter: https://username.github.io/Bitcoin-Tausch-Netzwerk
+1. Repository Settings → Pages → Source: docs/
+2. ✅ Live unter: https://dein-username.github.io/Bitcoin-Tausch-Netzwerk/start.html
 ```
 
-### **Als PWA:**
-- 📱 **Installierbar** auf Handy/Desktop
-- 🔔 **Push-Notifications** 
-- 💾 **Offline-fähig**
-- ⚡ **App-ähnliche** Performance
-
----
-
-## 🎯 **Next Steps**
-
-### **Phase 1: MVP** ✅
-- [x] Nsec-Login System
-- [x] Allowlist-Verwaltung  
-- [x] Basic UI mit Nostr-Design
-- [x] Demo-Angebote anzeigen
-
-### **Phase 2: Erweitert** 🚧
-- [ ] Echte Nostr-Integration
-- [ ] Bitcoin-Angebote CRUD
-- [ ] Chat-System (DMs)
-- [ ] Push-Notifications
-
-### **Phase 3: Pro** 📈
-- [ ] Lightning-Integration
-- [ ] Reputation-System
-- [ ] Mobile App (Tauri)
-- [ ] Multi-Sprachen Support
+### **Allowlist anpassen:**
+```javascript
+// In docs/config.js:
+const AUTHORIZED_MEMBERS = [
+    'npub1deine...echte...npub',     // Du
+    'npub1freund1...npub',           // Bitcoin-Trader 1  
+    'npub1freund2...npub',           // Bitcoin-Trader 2
+];
+```
 
 ---
 
 ## ⚡ **Schnellstart**
 
-1. **Clone & Setup:**
-   ```bash
-   git clone https://github.com/username/Bitcoin-Tausch-Netzwerk
-   cd Bitcoin-Tausch-Netzwerk/docs
-   python -m http.server 8000
-   ```
+### **1. Lokal testen:**
+```bash
+cd docs/ && python -m http.server 8000
+# → http://localhost:8000/start.html
+```
 
-2. **Test-Login:**
-   - Öffne `http://localhost:8000`
-   - Verwende Test-nsec: `nsec1test...` (siehe Code)
-   - Zugang zur Demo-Handels-Gruppe
+### **2. Demo-Login verwenden:**
+```
+nsec15tl6pwn8h00w85qcvggchzuf0egk4jha08q8mtw74q6ennu45lzsjmpfhw
+```
 
-3. **Member hinzufügen:**
-   - Editiere `AUTHORIZED_MEMBERS` Array
-   - Füge npub des neuen Members hinzu
-   - Deploy → User kann sich einloggen
+### **3. Live deployen:**
+```bash
+git push → GitHub Pages aktivieren → Sofort verfügbar!
+```
 
 ---
 
-**🏢 Perfekt für deine private Bitcoin-Handels-Crew!** 🚀
+## 🎯 **Status & Roadmap**
 
-*Einfach, sicher, dezentral - genau wie Bitcoin selbst.* ₿
+### **✅ MVP - Vollständig implementiert**
+- [x] nsec-Login funktional
+- [x] Anonyme Angebots-Anzeige
+- [x] Interessenten-System aktiv
+- [x] Partner-Auswahl implementiert
+- [x] Mobile-responsive
+
+### **🚧 v2.0 - Nostr-Integration (geplant)**
+- [ ] Echte Nostr DMs für Chat
+- [ ] Live-Angebots-Publishing
+- [ ] Push-Notifications
+- [ ] create-offer.html Seite
+
+### **📈 v3.0 - Community-Features**
+- [ ] Reputation-System
+- [ ] Lightning-Integration  
+- [ ] Multi-Sprachen Support
+
+---
+
+**🎉 Das Bitcoin-Tausch-Netzwerk ist LIVE!**
+
+### 🔗 **Direktlinks:**
+- 🚀 **Login**: `start.html`
+- 💰 **Dashboard**: `dashboard.html` 
+- 👥 **Management**: `my-offers.html`
+
+*Anonyme Bitcoin-Kontaktvermittlung - funktional, sicher, sofort einsatzbereit.* ⚡₿

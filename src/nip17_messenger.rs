@@ -201,7 +201,7 @@ impl Nip17Messenger {
             .pubkey(self.keys.public_key());
 
         // Subscribe zu eingehenden Messages
-        self.client.subscribe(vec![filter], None).await;
+        let _ = self.client.subscribe(vec![filter], None).await;
 
         // Handle incoming events
         let mut notifications = self.client.notifications();

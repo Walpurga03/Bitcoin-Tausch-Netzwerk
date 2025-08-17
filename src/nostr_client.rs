@@ -1,7 +1,7 @@
 use anyhow::{Result, anyhow};
 use nostr_sdk::prelude::*;
 use std::time::Duration;
-use tracing::{info, error, warn, debug};
+use tracing::{info, error, warn};
 use tokio::time::timeout;
 
 use crate::types::AnonymousOffer;
@@ -84,6 +84,7 @@ impl NostrClient {
     }
 
     /// Hole die Public Key für diese Session
+    #[allow(dead_code)]
     pub fn get_public_key(&self) -> PublicKey {
         self.keys.public_key()
     }
@@ -102,6 +103,7 @@ impl NostrClient {
     }
 
     /// Sende eine private Interessensbekundung (später implementiert)  
+    #[allow(dead_code)]
     pub async fn send_private_interest(&self, _target_pubkey: &str, _message: &str) -> Result<EventId> {
         // TODO: Implementiere NIP-17 private messages
         warn!("🚧 send_private_interest not yet implemented");
@@ -109,6 +111,7 @@ impl NostrClient {
     }
 
     /// Lausche auf Events (später implementiert)
+    #[allow(dead_code)]
     pub async fn start_listening(&self) -> Result<()> {
         // TODO: Implementiere Event-Listener für Angebote und Nachrichten
         warn!("🚧 start_listening not yet implemented");

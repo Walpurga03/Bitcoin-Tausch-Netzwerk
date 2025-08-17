@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::sync::{Arc, RwLock};
 use anyhow::{Result, anyhow};
-use tracing::{info, warn, debug};
+use tracing::{info, debug};
 
 use crate::types::{AnonymousOffer, PrivateInterest, OfferStatus, OfferType};
 
@@ -36,6 +36,7 @@ impl OfferManager {
     }
 
     /// Hole ein Angebot per ID
+    #[allow(dead_code)]
     pub fn get_offer(&self, offer_id: &str) -> Result<Option<AnonymousOffer>> {
         let offers = self.offers.read().map_err(|_| anyhow!("Failed to acquire read lock"))?;
         Ok(offers.get(offer_id).cloned())
@@ -110,6 +111,7 @@ impl OfferManager {
     }
 
     /// Entferne abgelaufene Angebote
+    #[allow(dead_code)]
     pub fn cleanup_expired_offers(&self) -> Result<u32> {
         let mut offers = self.offers.write().map_err(|_| anyhow!("Failed to acquire write lock"))?;
         let mut interests = self.interests.write().map_err(|_| anyhow!("Failed to acquire write lock"))?;

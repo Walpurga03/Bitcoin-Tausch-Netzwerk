@@ -96,3 +96,4 @@ site/
 
 # ⚠️ WICHTIG: Diese Datei schützt vor versehentlichem
 # Commit von privaten Schlüsseln und sensiblen Daten!
+target/

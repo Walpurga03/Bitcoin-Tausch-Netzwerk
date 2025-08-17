@@ -1,5 +1,5 @@
 use anyhow::Result;
-use tracing::{info, error, warn};
+use tracing::{info, warn};
 
 mod types;
 mod offer_manager;

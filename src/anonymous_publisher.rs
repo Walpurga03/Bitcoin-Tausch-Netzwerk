@@ -40,7 +40,7 @@ impl AnonymousOfferPublisher {
 
         // 5. Sende das gift-wrapped Event
         match self.client.send_event(wrapped_event).await {
-            Ok(output) => {
+            Ok(_output) => {
                 info!("✅ Anonymous offer published successfully!");
                 info!("🎭 Pseudo-ID: {}", offer.pseudo_id);
                 info!("💰 Offer: {} {} for {}€", offer.offer_type, offer.amount_btc, offer.amount_eur);
@@ -95,7 +95,7 @@ impl AnonymousOfferPublisher {
     }
 
     /// Erstelle ein Gift-Wrapped Event (vereinfachte NIP-59 Implementation)
-    async fn create_gift_wrapped_event(&self, inner_event: Event, temp_keys: &Keys) -> Result<Event> {
+    async fn create_gift_wrapped_event(&self, _inner_event: Event, temp_keys: &Keys) -> Result<Event> {
         info!("🎁 Creating gift-wrapped event for anonymity...");
 
         // Für diese MVP-Version verwenden wir eine vereinfachte Gift-Wrapping-Strategie:
